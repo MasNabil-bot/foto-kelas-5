@@ -1,0 +1,480 @@
+
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101b3d">
+<title>Mading Digital Agustus</title>
+
+<style>
+:root{
+  --bg:#101b3d;
+  --gold:#f4c95d;
+  --muted:#b9c5df;
+  --panel:#172449;
+}
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:system-ui,Arial,sans-serif;
+  color:#fff;
+  background:
+    radial-gradient(ellipse at 10% 0%,#293d73,transparent 45%),
+    var(--bg);
+}
+main{
+  width:min(1180px,calc(100% - 28px));
+  margin:auto;
+  padding:24px 0 40px;
+}
+.hero{
+  position:relative;
+  overflow:hidden;
+  padding:clamp(24px,5vw,48px);
+  border-radius:26px;
+  background:linear-gradient(135deg,#253966,#172449);
+  border:1px solid #ffffff22;
+  box-shadow:0 20px 50px #0003;
+}
+.eyebrow{
+  color:var(--gold);
+  font-size:.78rem;
+  letter-spacing:.15em;
+  font-weight:800;
+  text-transform:uppercase;
+}
+h1{
+  font-size:clamp(2rem,5vw,3.8rem);
+  line-height:1.05;
+  margin:12px 0;
+}
+.hero p{
+  max-width:680px;
+  line-height:1.7;
+  color:#dce4f5;
+  margin-bottom:0;
+}
+.hero-decoration{
+  position:absolute;
+  right:35px;
+  top:15px;
+  font-size:clamp(4rem,10vw,8rem);
+  opacity:.15;
+  pointer-events:none;
+}
+.toolbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+  margin:25px 0 18px;
+}
+.tabs{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.tab{
+  cursor:pointer;
+  border:1px solid #ffffff30;
+  border-radius:999px;
+  padding:12px 17px;
+  background:#ffffff0d;
+  color:white;
+  font:inherit;
+  font-weight:750;
+  transition:background .2s,color .2s;
+}
+.tab[aria-pressed="true"]{
+  background:var(--gold);
+  color:#17213a;
+  border-color:var(--gold);
+}
+.tab:focus-visible,
+.poster:focus-visible,
+.close:focus-visible{
+  outline:3px solid #fff;
+  outline-offset:4px;
+}
+.count{
+  color:var(--muted);
+  font-size:.9rem;
+}
+h2{
+  font-size:clamp(1.35rem,3vw,1.9rem);
+  line-height:1.3;
+  margin:0;
+}
+.sub{
+  color:var(--muted);
+  margin:7px 0 18px;
+  font-size:.95rem;
+  line-height:1.6;
+}
+.gallery{
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  gap:16px;
+  max-width:1000px;
+  margin:0 auto;
+}
+.poster{
+  width:100%;
+  min-width:0;
+  text-align:center;
+  padding:10px;
+  border:1px solid #ffffff35;
+  border-radius:18px;
+  background:#ffffff0d;
+  color:#fff;
+  cursor:pointer;
+  box-shadow:0 12px 24px #0003;
+  transition:transform .2s,box-shadow .2s;
+}
+.poster:hover{
+  transform:translateY(-3px);
+  box-shadow:0 18px 32px #0004;
+}
+.poster img{
+  width:100%;
+  max-height:75vh;
+  object-fit:contain;
+  border-radius:10px;
+  display:block;
+  background:#e8ebf2;
+}
+.poster-title{
+  display:block;
+  font-size:1.05rem;
+  font-weight:800;
+  line-height:1.4;
+  margin:12px 3px 0;
+}
+.tag{
+  display:block;
+  color:var(--muted);
+  font-size:.75rem;
+  font-weight:750;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  margin:7px 3px 3px;
+}
+footer{
+  text-align:center;
+  color:#9eaccb;
+  margin-top:30px;
+  font-size:.85rem;
+  line-height:1.8;
+}
+
+/* Tampilan gambar diperbesar */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:10;
+  background:rgba(5,9,24,.95);
+  align-items:center;
+  justify-content:center;
+  padding:22px;
+}
+.modal.open{display:flex}
+.panel{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+  width:100%;
+  max-width:1100px;
+  max-height:94vh;
+}
+.panel img{
+  max-width:100%;
+  max-height:82vh;
+  object-fit:contain;
+  border-radius:10px;
+  background:white;
+}
+.caption{
+  font-weight:750;
+  text-align:center;
+  line-height:1.5;
+  color:#fff;
+}
+.close{
+  position:absolute;
+  right:-10px;
+  top:-15px;
+  z-index:2;
+  border:0;
+  border-radius:50%;
+  width:42px;
+  height:42px;
+  background:var(--gold);
+  color:#17213a;
+  font-size:1.5rem;
+  font-weight:800;
+  cursor:pointer;
+}
+.image-error{
+  min-height:180px;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  padding:25px;
+  background:#e8ebf2;
+  color:#34405c;
+  border-radius:10px;
+  line-height:1.7;
+}
+
+@media(max-width:720px){
+  main{
+    width:calc(100% - 20px);
+    padding-top:10px;
+  }
+  .gallery{gap:11px}
+  .poster{padding:6px}
+  .poster-title{font-size:.95rem}
+  .hero{border-radius:20px}
+  .hero-decoration{right:15px;top:12px}
+}
+@media(max-width:460px){
+  .tab{
+    padding:10px 13px;
+    font-size:.85rem;
+  }
+  .toolbar{margin-top:18px}
+  .modal{padding:12px}
+  .panel img{max-height:78vh}
+  .close{right:0;top:-12px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    transition:none!important;
+    scroll-behavior:auto!important;
+  }
+}
+</style>
+</head>
+
+<body>
+<main>
+
+<header class="hero">
+  <div class="hero-decoration" aria-hidden="true">🇮🇩</div>
+  <div class="eyebrow">Ruang Karya & Informasi</div>
+  <h1>Mading Digital Agustus</h1>
+  <p>
+    Semangat kemerdekaan dan keteladanan akhlak mulia.
+    Pilih kategori untuk melihat papan mading yang berisi
+    10 poster mini. Klik gambar untuk memperbesar.
+  </p>
+</header>
+
+<nav class="toolbar" aria-label="Kategori mading">
+  <div class="tabs">
+    <button
+      class="tab"
+      type="button"
+      data-category="kemerdekaan"
+      aria-pressed="true">
+      🇮🇩 Kemerdekaan Indonesia
+    </button>
+
+    <button
+      class="tab"
+      type="button"
+      data-category="maulid"
+      aria-pressed="false">
+      🌙 Maulid Nabi
+    </button>
+  </div>
+
+  <div class="count" id="count" aria-live="polite">
+    Menampilkan 1 gambar mading
+  </div>
+</nav>
+
+<section aria-labelledby="heading">
+  <h2 id="heading">Mading Kemerdekaan Indonesia</h2>
+  <p class="sub" id="sub">
+    Merayakan 17 Agustus dengan semangat persatuan dan cinta tanah air.
+  </p>
+  <div class="gallery" id="gallery"></div>
+</section>
+
+<footer>
+  © Mading Digital Agustus<br>
+  Belajar, Berkarya, dan Menjaga Semangat Persatuan
+</footer>
+
+</main>
+
+<div
+  class="modal"
+  id="modal"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Papan mading diperbesar"
+  aria-hidden="true">
+
+  <div class="panel">
+    <button
+      class="close"
+      id="close"
+      type="button"
+      aria-label="Tutup gambar">×</button>
+
+    <img id="large" alt="">
+    <div class="caption" id="caption"></div>
+  </div>
+</div>
+
+<script>
+const posters = {
+  kemerdekaan: {
+    heading: 'Mading Kemerdekaan Indonesia',
+    description:
+      'Merayakan 17 Agustus dengan semangat persatuan dan cinta tanah air.',
+    title: 'Papan Mading Kemerdekaan Indonesia',
+    image: '1.jpg',
+    tag: 'Edisi 17 Agustus'
+  },
+
+  maulid: {
+    heading: 'Mading Maulid Nabi Muhammad SAW',
+    description:
+      'Belajar meneladani akhlak Rasulullah melalui kejujuran, kepedulian, dan kebaikan.',
+    title: 'Papan Mading Maulid Nabi Muhammad SAW',
+    image: '2.jpg',
+    tag: 'Edisi Maulid Nabi'
+  }
+};
+
+const gallery = document.querySelector('#gallery');
+const heading = document.querySelector('#heading');
+const sub = document.querySelector('#sub');
+const count = document.querySelector('#count');
+const modal = document.querySelector('#modal');
+const large = document.querySelector('#large');
+const caption = document.querySelector('#caption');
+const closeButton = document.querySelector('#close');
+
+let currentCategory = 'kemerdekaan';
+let lastFocused = null;
+
+function render(category) {
+  currentCategory = category;
+  const item = posters[category];
+
+  gallery.replaceChildren();
+
+  heading.textContent = item.heading;
+  sub.textContent = item.description;
+  count.textContent = 'Menampilkan 1 gambar papan mading';
+
+  document.querySelectorAll('.tab').forEach(button => {
+    button.setAttribute(
+      'aria-pressed',
+      String(button.dataset.category === category)
+    );
+  });
+
+  const card = document.createElement('button');
+  card.className = 'poster';
+  card.type = 'button';
+  card.setAttribute('aria-label', 'Perbesar ' + item.title);
+
+  const img = document.createElement('img');
+  img.src = item.image;
+  img.alt = item.title + ', berisi 10 poster mini';
+  img.loading = 'lazy';
+  img.decoding = 'async';
+
+  img.addEventListener('error', () => {
+    const note = document.createElement('div');
+    note.className = 'image-error';
+    note.textContent =
+      'Gambar belum ditemukan: ' + item.image +
+      '. Pastikan file sudah diunggah ke folder yang sama dengan index.html.';
+    img.replaceWith(note);
+  }, { once: true });
+
+  const name = document.createElement('span');
+  name.className = 'poster-title';
+  name.textContent = item.title;
+
+  const tag = document.createElement('span');
+  tag.className = 'tag';
+  tag.textContent = item.tag + ' · 10 poster mini';
+
+  card.append(img, name, tag);
+
+  card.addEventListener('click', () => {
+    openModal(item);
+  });
+
+  gallery.append(card);
+}
+
+function openModal(item) {
+  lastFocused = document.activeElement;
+  large.onerror = () => {
+    caption.textContent =
+      'Gambar tidak dapat dimuat. Periksa file ' + item.image + '.';
+  };
+
+  large.src = item.image;
+  large.alt = item.title + ', berisi 10 poster mini';
+  caption.textContent = item.title;
+
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  closeButton.focus();
+}
+
+function closeModal() {
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+  large.removeAttribute('src');
+  large.onerror = null;
+  document.body.style.overflow = '';
+
+  if (lastFocused && typeof lastFocused.focus === 'function') {
+    lastFocused.focus();
+  }
+}
+
+document.querySelectorAll('.tab').forEach(button => {
+  button.addEventListener('click', () => {
+    if (modal.classList.contains('open')) {
+      closeModal();
+    }
+    render(button.dataset.category);
+  });
+});
+
+closeButton.addEventListener('click', closeModal);
+
+modal.addEventListener('click', event => {
+  if (event.target === modal) {
+    closeModal();
+  }
+});
+
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && modal.classList.contains('open')) {
+    closeModal();
+  }
+});
+
+render(currentCategory);
+</script>
+</body>
+</html>
